@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/Users/jaker/.virtualenvs/flaskBlogEnv/bin/python"
+    "python.pythonPath": "/Users/jaker/.virtualenvs/flaskBlogEnv/bin/python",
+    "sqltools.connections": []
 }
