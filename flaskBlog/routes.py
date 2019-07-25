@@ -1,4 +1,7 @@
-from models import User, Post
+from flask import render_template, url_for, flash, redirect
+from flaskBlog import app
+from flaskBlog.forms import LoginForm, RegistrationForm
+from flaskBlog.models import User, Post
 
 posts = [
     {
