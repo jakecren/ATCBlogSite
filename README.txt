@@ -2,6 +2,7 @@ This site is/will be the result of folowing a tutorial on youtube in hope of get
 
 Packages needed:
 astroid           2.2.5  
+autopep8          1.4.4  
 bcrypt            3.1.7  
 cffi              1.12.3 
 Click             7.0    
@@ -16,7 +17,9 @@ Jinja2            2.10.1
 lazy-object-proxy 1.4.1  
 MarkupSafe        1.1.1  
 mccabe            0.6.1  
-pip               19.1.1 
+Pillow            6.1.0  
+pip               19.2.1 
+pycodestyle       2.5.0  
 pycparser         2.19   
 pylint            2.3.1  
 setuptools        41.0.1 
