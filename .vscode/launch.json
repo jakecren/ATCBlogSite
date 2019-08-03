@@ -15,7 +15,7 @@
             "name": "WebApp - Python Run",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/flaskBlog.py",
+            "program": "${workspaceFolder}/run.py",
             "console": "integratedTerminal"
         },
         {
