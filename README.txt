@@ -1,11 +1,15 @@
 This site is/will be the result of folowing a tutorial on youtube in hope of getting back into web app coding.
 
-Packages needed:
+
+Package           Version
+----------------- -------
 astroid           2.2.5  
 autopep8          1.4.4  
 bcrypt            3.1.7  
 cffi              1.12.3 
 Click             7.0    
+entrypoints       0.3    
+flake8            3.7.8  
 Flask             1.1.1  
 Flask-Bcrypt      0.7.1  
 Flask-Login       0.4.1  
@@ -21,6 +25,7 @@ Pillow            6.1.0
 pip               19.2.1 
 pycodestyle       2.5.0  
 pycparser         2.19   
+pyflakes          2.1.1  
 pylint            2.3.1  
 setuptools        41.0.1 
 six               1.12.0 
