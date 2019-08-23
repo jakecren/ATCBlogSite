@@ -1,30 +1,39 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-<table class="table adminTable">
-    <thead>
-        <tr>
-            <th>User ID</th>
-            <th>Username</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for user in users %}
-        <tr>
-            <td>
-                {{ user.id }}
-            </td>
-            <td>
-                {{ user.username }}
-            </td>
-            <td>
-                {{ user.email }}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
+<div id="adminTable">
+    <table class="table" style="margin-bottom: 0px;">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Forename</th>
+                <th>Surname</th>
+                <th>Username</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>
+                    {{ user.id }}
+                </td>
+                <td>
+                    {{ user.forename }}
+                </td>
+                <td>
+                    {{ user.surname }}
+                </td>
+                <td>
+                    {{ user.username }}
+                </td>
+                <td>
+                    {{ user.email }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock content %}

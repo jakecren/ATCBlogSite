@@ -23,7 +23,7 @@ def save_picture(form_picture):
 @app.route("/")
 def home():
     posts = Post.query.all()
-    return render_template("home.html", posts=posts)
+    return render_template("home.html", title="ATC Blog", posts=posts)
 
 
 @app.route("/about")
@@ -80,11 +80,15 @@ def account():
             current_user.image_file = picture_file
         current_user.username = form.username.data
         current_user.email = form.email.data
+        current_user.forename = form.forename.data
+        current_user.surname = form.surname.data
         db.session.commit()
         flash("Your account has been updated!", "success")
         return redirect(url_for("account"))
     elif request.method == "GET":
         form.username.data = current_user.username
+        form.forename.data = current_user.forename
+        form.surname.data = current_user.surname
         form.email.data = current_user.email
     image_file = url_for(
         "static", filename="profile_pics/" + current_user.image_file)
@@ -103,7 +107,6 @@ def admin():
 @app.route("/post/new", methods=["GET", "POST"])
 @login_required
 def new_post():
-    form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data,
                     content=form.content.data, author=current_user)
@@ -136,7 +139,7 @@ def update_post(post_id):
     elif request.method == "GET":
         form.title.data = post.title
         form.content.data = post.content
-    return render_template("create_post.html", title="Update Post", form=form, legend="Update Post")
+    return render_template("create_post.html", title="Update Post", form=form, posts=posts, legend="Update Post")
 
 
 @app.route("/post/<int:post_id>/delete", methods=["POST"])

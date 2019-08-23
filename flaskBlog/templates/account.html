@@ -25,7 +25,32 @@
                     {% else %}
                     {{ form.username(class="form-control form-control-lg") }}
                     {% endif %}
-
+                </div>
+                <div class="form-group">
+                    {{ form.forename.label(class="form-control-label") }}
+                    {% if form.forename.errors %}
+                    {{ form.forename(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.forename.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.forename(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.surname.label(class="form-control-label") }}
+                    {% if form.surname.errors %}
+                    {{ form.surname(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.surname.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.surname(class="form-control form-control-lg") }}
+                    {% endif %}
                 </div>
                 <div class="form-group">
                     {{ form.email.label(class="form-control-label") }}

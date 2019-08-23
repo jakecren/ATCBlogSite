@@ -1,11 +1,36 @@
 html {
-  width: 85% !important;
+  width: 75% !important;
   margin: auto !important;
   background-color: #c0c0c0 !important;
 }
 .banner{
-  height: 250px;
+  height: 150px;
+  padding-top: 20px;
   background-color: #FFFFFF;
+}
+
+#EREA{
+  padding-top: 45px;
+}
+
+#main{
+  padding-right: 0px;
+}
+
+#side{
+  padding-left: 0px;
+}
+
+#adminTable{
+  background: rgb(255, 255, 255);
+  padding-left: 3px;
+  padding-right: 3px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-top: 7px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
 }
 
 .container {
@@ -48,6 +73,8 @@ body {
     border-radius: 3px;
     margin-top: 7px;
     margin-bottom: 13px;
+    margin-left: 5px;
+    margin-right: 5px;
   }
   
   .article-title {

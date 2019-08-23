@@ -7,15 +7,18 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     {% if title %}
-    <title>Flask Blog - {{ title }}</title>
+    <title>{{ title }}</title>
     {% else %}
     <title>Flask Blog</title>
     {% endif %}
 </head>
 
 <body>
-    <div class = "banner">
-        <img src="\flaskBlog\static\ATCLogo.png" alt="Ambrose Treacy College">
+    <div class="container">
+        <div class = "banner">
+            <a href="{{ url_for('home') }}"><img class="col-md-5 img-responsive float-left" src="\static\ATCLogo.png" alt="Ambrose Treacy College"></a>
+            <a href="http://www.erea.edu.au" target="_blank"><img class="col-md-5 img-responsive float-right" id="EREA" src="\static\EREALogo.png" alt="A Catholic School In The Edmund Rice Tradition"></a>
+        </div>
     </div>
     <header class="site-header">
         <nav class="navbar navbar-expand-md navbar-dark bg-steel">
@@ -27,7 +30,6 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav mr-auto">
-                        <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
                         <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
                     </div>
                     <!-- Navbar Right Side -->
@@ -50,11 +52,11 @@
     </header>
     <main role="main" class="container">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8" id="main">
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                 {% for category, message in messages  %}
-                <div class="alert alert-{{ category }}">
+                <div class="alert alert-{{ category }}" style="padding-top: 5px;">
                     {{ message }}
                 </div>
                 {% endfor %}
@@ -62,15 +64,14 @@
                 {% endwith %}
                 {% block content %}{% endblock %}
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" id="side">
                 <div class="content-section">
-                    <h3>Our Sidebar</h3>
-                    <p class='text-muted'>You can put any information here you'd like.
+                    <h3>Recent Posts</h3>
+                    <p class='text-muted'>
                         <ul class="list-group">
-                            <li class="list-group-item list-group-item-light">Latest Posts</li>
-                            <li class="list-group-item list-group-item-light">Announcements</li>
-                            <li class="list-group-item list-group-item-light">Calendars</li>
-                            <li class="list-group-item list-group-item-light">etc</li>
+                            {% for post in posts[::-1] %}
+                                <li class="list-group-item list-group-item-light">{{ post.title }}</li>
+                            {% endfor %}
                         </ul>
                     </p>
                 </div>
