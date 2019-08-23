@@ -93,7 +93,11 @@ def account():
 
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
-    return render_template("admin.html", Title="Administration")
+    if current_user.administrator != 1:
+        return redirect(url_for("home"))
+    else:
+        users = User.query.all()
+        return render_template("admin.html", Title="Administration", users=users)
 
 
 @app.route("/post/new", methods=["GET", "POST"])
