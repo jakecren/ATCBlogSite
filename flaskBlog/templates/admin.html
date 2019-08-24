@@ -1,39 +1,128 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-<div id="adminTable">
-    <table class="table" style="margin-bottom: 0px;">
-        <thead>
-            <tr>
-                <th>User ID</th>
-                <th>Forename</th>
-                <th>Surname</th>
-                <th>Username</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr>
-                <td>
-                    {{ user.id }}
-                </td>
-                <td>
-                    {{ user.forename }}
-                </td>
-                <td>
-                    {{ user.surname }}
-                </td>
-                <td>
-                    {{ user.username }}
-                </td>
-                <td>
-                    {{ user.email }}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+<div class="container">
+    <div id="title">
+        <h1>Administration</h1>
+    </div>
+    <div style="margin-bottom: 10px; padding-left: 5px;">
+        <input class="form-control" id="searchInput" type="text" placeholder="Search...">
+    </div>
+    <div class="table-responsive" id="adminTable" style="width: auto;">
+
+        <table class="table table-hover" style="margin-bottom: 0px;">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Forename</th>
+                    <th>Surname</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="userTable">
+                {% for user in users %}
+                <tr>
+                    <td>
+                        {{ user.id }}
+                    </td>
+                    <td>
+                        {{ user.forename }}
+                    </td>
+                    <td>
+                        {{ user.surname }}
+                    </td>
+                    <td>
+                        {{ user.username }}
+                    </td>
+                    <td>
+                        {{ user.email }}
+                    </td>
+                    <td style="padding-right: 0px;">
+                        <a class="btn btn-outline-info btn-sm" href="{{ url_for('editUser', userToEdit=user.id) }}">Edit
+                            User</a>
+                    </td>
+                    <td style="padding-right: 0px;">
+                        <a class="btn btn-outline-danger btn-sm"
+                            href="{{ url_for('deleteUser', userToDelete=user.id) }}">Remove User</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
 </div>
+
+
+{% if userE != None %}
+<!-- The Modal -->
+<div class="modal" id="editUserModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Edit User</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                Editing User: {{ userE.username }}!
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>$("#editUserModal").modal();</script>
+{% endif %}
+
+
+{% if userD != None %}
+<!-- Delete User Modal -->
+<div class="modal fade" id="deleteUserModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Remove User</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you would like to remove user: {{ userD.username }}?
+            </div>
+            <div class="modal-footer">
+                <form action="{{ url_for('DELETEUSER', userToDelete=userD.id) }}" method="POST">
+                    <input class="btn btn-danger" type="submit" value="Remove User">
+                </form>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>$("#deleteUserModal").modal();</script>
+{% endif %}
+
+
+<!-- Search Bar JQuery Code -->
+<script>
+    $(document).ready(function () {
+        $("#searchInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#userTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
 
 {% endblock content %}

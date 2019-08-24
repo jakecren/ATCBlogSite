@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 
+{% if title == "Administration" %}
+{% set bootWidth = 12 %}
+{% else %}
+{% set bootWidth = 8 %}
+{% endif %}
+
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="icon" type="image/png" href="/static/favicon.png">
     {% if title %}
     <title>{{ title }}</title>
     {% else %}
@@ -15,9 +31,11 @@
 
 <body>
     <div class="container">
-        <div class = "banner">
-            <a href="{{ url_for('home') }}"><img class="col-md-5 img-responsive float-left" src="\static\ATCLogo.png" alt="Ambrose Treacy College"></a>
-            <a href="http://www.erea.edu.au" target="_blank"><img class="col-md-5 img-responsive float-right" id="EREA" src="\static\EREALogo.png" alt="A Catholic School In The Edmund Rice Tradition"></a>
+        <div class="banner">
+            <a href="{{ url_for('home') }}"><img class="col-md-5 img-fluid float-left" src="\static\ATCLogo.png"
+                    alt="Ambrose Treacy College"></a>
+            <a href="http://www.erea.edu.au" target="_blank"><img class="col-md-5 img-fluid float-right" id="EREA"
+                    src="\static\EREALogo.png" alt="A Catholic School In The Edmund Rice Tradition"></a>
         </div>
     </div>
     <header class="site-header">
@@ -38,7 +56,7 @@
                         <a class="nav-item nav-link" href="{{ url_for('new_post') }}">New Post</a>
                         <a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
                         {% if current_user.administrator == 1 %}
-                            <a class="nav-item nav-link" href="{{  url_for('admin')  }}">Administration</a>
+                        <a class="nav-item nav-link" href="{{  url_for('admin')  }}">Administration</a>
                         {% endif %}
                         <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                         {% else %}
@@ -51,12 +69,13 @@
         </nav>
     </header>
     <main role="main" class="container">
-        <div class="row">
-            <div class="col-md-8" id="main">
+        <div class="row container" style="width: auto; margin-right: 0px;">
+            <div class="col-md-{{ bootWidth }}" id="main">
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                 {% for category, message in messages  %}
-                <div class="alert alert-{{ category }}" style="padding-top: 5px;">
+                <div class="alert alert-{{ category }}"
+                    style="padding-top: 10px; margin-top: 10px; margin-left: 5px; margin-right: 0px;">
                     {{ message }}
                 </div>
                 {% endfor %}
@@ -64,29 +83,23 @@
                 {% endwith %}
                 {% block content %}{% endblock %}
             </div>
+            {% if title != "Administration" %}
             <div class="col-md-4" id="side">
                 <div class="content-section">
                     <h3>Recent Posts</h3>
                     <p class='text-muted'>
                         <ul class="list-group">
                             {% for post in posts[::-1] %}
-                                <li class="list-group-item list-group-item-light">{{ post.title }}</li>
+                            <li class="list-group-item list-group-item-light"><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></li>
                             {% endfor %}
                         </ul>
                     </p>
                 </div>
             </div>
+            {% endif %}
         </div>
     </main>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+
 </body>
 
 </html>

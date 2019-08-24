@@ -6,6 +6,7 @@ html {
 .banner{
   height: 150px;
   padding-top: 20px;
+  margin-bottom: 8px;
   background-color: #FFFFFF;
 }
 
@@ -13,12 +14,14 @@ html {
   padding-top: 45px;
 }
 
-#main{
-  padding-right: 0px;
+#title{
+  padding-left: 7px;
+  padding-top: 10px;
+  margin-bottom: 15px;
 }
 
-#side{
-  padding-left: 0px;
+#main{
+  padding-right: 0px;
 }
 
 #adminTable{
@@ -30,7 +33,7 @@ html {
   margin-top: 7px;
   margin-left: 5px;
   margin-right: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .container {
