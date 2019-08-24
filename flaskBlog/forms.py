@@ -43,10 +43,11 @@ class UpdateAccountForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email()])
     picture = FileField("Update Profile Picture", validators=[
                         FileAllowed(["jpg", "png"])])
+    admin = BooleanField("Administrator")
     submit = SubmitField("Update Details")
 
     def validate_username(self, username):
-        if username.data != current_user.username:
+        if not username.data == current_user.username:
             user = User.query.filter_by(username=username.data).first()
             if user:
                 raise ValidationError(
@@ -54,6 +55,32 @@ class UpdateAccountForm(FlaskForm):
 
     def validate_email(self, email):
         if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError(
+                    "Email is unavailable, please choose a different username.")
+
+
+class UpdateAccountFormAdmin(FlaskForm):
+    username = StringField("Username", validators=[
+                           DataRequired(), Length(min=2, max=20)])
+    forename = StringField("First Name", validators=[Length(max=50)])
+    surname = StringField("Last Name", validators=[Length(max=50)])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    picture = FileField("Update Profile Picture", validators=[
+                        FileAllowed(["jpg", "png"])])
+    admin = BooleanField("Administrator")
+    submit = SubmitField("Update Details")
+
+    def validate_username(self, username):
+        if not username.data == self.userE.username:
+            user = User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError(
+                    "Username is unavailable, please choose a different username.")
+
+    def validate_email(self, email):
+        if email.data != self.userE.email:
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError(

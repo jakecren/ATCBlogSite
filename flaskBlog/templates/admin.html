@@ -60,26 +60,104 @@
 
 {% if userE != None %}
 <!-- The Modal -->
-<div class="modal" id="editUserModal">
+<div class="modal fade" id="editUserModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Edit User</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
+            <form method="POST" action="" enctype="multipart/form-data">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit User</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
 
-            <!-- Modal body -->
-            <div class="modal-body">
-                Editing User: {{ userE.username }}!
-            </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="media">
+                        <img class="rounded-circle account-img" src="{{ image_file }}" alt="userImage">
+                        <div class="media-body">
+                            <h2 class="account-heading">{{ userE.username }}</h2>
+                            <p class="text-secondary">{{ userE.email }}</p>
+                        </div>
+                    </div>
+                    <div class="content-section">
+                        {{ form.hidden_tag() }}
+                        <fieldset class="form-group">
+                            <legend class="border-bottom mb-4">Update Account Details</legend>
+                            <div class="form-group">
+                                {{ form.username.label(class="form-control-label") }}
+                                {% if form.username.errors %}
+                                {{ form.username(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.username.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.username(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.forename.label(class="form-control-label") }}
+                                {% if form.forename.errors %}
+                                {{ form.forename(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.forename.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.forename(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.surname.label(class="form-control-label") }}
+                                {% if form.surname.errors %}
+                                {{ form.surname(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.surname.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.surname(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.email.label(class="form-control-label") }}
+                                {% if form.email.errors %}
+                                {{ form.email(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.email(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form.picture.label() }}
+                                {{ form.picture(class="form-control-file") }}
+                                {% if form.picture.errors %}
+                                {% for error in form.picture.errors %}
+                                <span class="text-danger">{{ error }}</span><br>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </fieldset>
+                    </div>
 
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <div class="form-group">
+                            {{ form.submit(class="btn btn-outline-info") }}
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                style="margin-left: 4px;">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
