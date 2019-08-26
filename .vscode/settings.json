@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\026341\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe",
+    "python.pythonPath": "/Users/jaker/.virtualenvs/flaskBlogEnv/bin/python",
     "sqltools.connections": [],
     "python.linting.pylintEnabled": false,
     "python.linting.enabled": false,
