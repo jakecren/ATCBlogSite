@@ -32,7 +32,7 @@
 <body>
     <div class="container">
         <div class="banner">
-            <a href="{{ url_for('home') }}"><img class="col-md-5 img-fluid float-left" src="\static\ATCLogo.png"
+            <a href="{{ url_for('main.home') }}"><img class="col-md-5 img-fluid float-left" src="\static\ATCLogo.png"
                     alt="Ambrose Treacy College"></a>
             <a href="http://www.erea.edu.au" target="_blank"><img class="col-md-5 img-fluid float-right" id="EREA"
                     src="\static\EREALogo.png" alt="A Catholic School In The Edmund Rice Tradition"></a>
@@ -41,27 +41,27 @@
     <header class="site-header">
         <nav class="navbar navbar-expand-md navbar-dark bg-steel">
             <div class="container">
-                <a class="navbar-brand mr-4" href="{{ url_for('home') }}">Ambrose Treacy College Blog</a>
+                <a class="navbar-brand mr-4" href="{{ url_for('main.home') }}">Ambrose Treacy College Blog</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
                     aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav mr-auto">
-                        <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
+                        <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                         {% if current_user.is_authenticated %}
-                        <a class="nav-item nav-link" href="{{ url_for('new_post') }}">New Post</a>
-                        <a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
+                        <a class="nav-item nav-link" href="{{ url_for('posts.new_post') }}">New Post</a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
                         {% if current_user.administrator == 1 %}
-                        <a class="nav-item nav-link" href="{{  url_for('admin')  }}">Administration</a>
+                        <a class="nav-item nav-link" href="{{  url_for('users.admin')  }}">Administration</a>
                         {% endif %}
-                        <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
                         {% else %}
-                        <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
-                        <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
                         {% endif %}
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                             {% for post in posts[::-1] %}
                             {% if loop.index <= 10 %}
                             <li class="list-group-item list-group-item-light"><a
-                                    href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a>
+                                    href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a>
                             </li>
                             {% endif %}
                             {% endfor %}

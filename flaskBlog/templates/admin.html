@@ -42,12 +42,12 @@
                         {{ user.email }}
                     </td>
                     <td style="padding-right: 0px;">
-                        <a class="btn btn-outline-info btn-sm" href="{{ url_for('editUser', userToEdit=user.id) }}">Edit
+                        <a class="btn btn-outline-info btn-sm" href="{{ url_for('users.editUser', userToEdit=user.id) }}">Edit
                             User</a>
                     </td>
                     <td style="padding-right: 0px;">
                         <a class="btn btn-outline-danger btn-sm"
-                            href="{{ url_for('deleteUser', userToDelete=user.id) }}">Remove User</a>
+                            href="{{ url_for('users.deleteUser', userToDelete=user.id) }}">Remove User</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -153,7 +153,7 @@
                         <div class="form-group">
                             {{ form.submit(class="btn btn-outline-info") }}
                             <button type="button" class="btn btn-danger" data-dismiss="modal"
-                                style="margin-left: 4px;">Close</button>
+                                style="margin-left: 4px;">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -178,7 +178,7 @@
                 Are you sure you would like to remove user: {{ userD.username }}?
             </div>
             <div class="modal-footer">
-                <form action="{{ url_for('DELETEUSER', userToDelete=userD.id) }}" method="POST">
+                <form action="{{ url_for('users.DELETEUSER', userToDelete=userD.id) }}" method="POST">
                     <input class="btn btn-danger" type="submit" value="Remove User">
                 </form>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

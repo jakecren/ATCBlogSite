@@ -1,46 +1,19 @@
-import secrets, os
-from PIL import Image
-from flask import render_template, url_for, flash, redirect, request, abort
-from flaskBlog import app, db, bcrypt
-from flaskBlog.forms import LoginForm, RegistrationForm, UpdateAccountForm, PostForm, UpdateAccountFormAdmin
-from flaskBlog.models import User, Post
+from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
+from flaskBlog import db, bcrypt
+from flaskBlog.models import User, Post
+from flaskBlog.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, UpdateAccountFormAdmin
+from flaskBlog.users.utils import save_picture, send_reset_email
 
 
-def save_picture(form_picture):
-    random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(
-        app.root_path, "static/profile_pics", picture_fn)
-    output_size = (125, 125)
-    i = Image.open(form_picture)
-    i.thumbnail(output_size)
-    i.save(picture_path)
-    return picture_fn
-
-
-########  Home  ########
-@app.route("/")
-def home():
-    page = request.args.get("page", 1, type=int)
-    homePosts = Post.query.paginate(page=page, per_page=1)
-    posts = Post.query.all()
-    return render_template("home.html", title="ATC Blog", homePosts=homePosts, posts=posts)
-
-
-########  About  ########
-@app.route("/about")
-def about():
-    posts = Post.query.all()
-    return render_template("about.html", title="About", posts=posts)
+users = Blueprint("users", __name__)
 
 
 ########  Login  ########
-@app.route("/login", methods=["GET", "POST"])
+@users.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("home"))
+        return redirect(url_for("main.home"))
     form = LoginForm()
     posts = Post.query.all()
     if form.validate_on_submit():
@@ -48,34 +21,32 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get("next")
-            return redirect(next_page) if next_page else redirect(url_for("home"))
+            return redirect(next_page) if next_page else redirect(url_for("main.home"))
         else:
             flash("Login unsuccessful.  Please check email and password!", "danger")
     return render_template("login.html", title="Login", form=form, posts=posts)
 
 
 ########  Register  ########
-@app.route("/register", methods=["GET", "POST"])
+@users.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for("home"))
+        return redirect(url_for("main.home"))
     form = RegistrationForm()
     posts = Post.query.all()
     if form.validate_on_submit():
-        hashedPassword = bcrypt.generate_password_hash(
-            form.password.data).decode("utf-8")
-        user = User(username=form.username.data,
-                    email=form.email.data, password=hashedPassword)
+        hashedPassword = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
+        user = User(username=form.username.data, email=form.email.data, password=hashedPassword)
         db.session.add(user)
         db.session.commit()
         login_user(user)
         flash(f"Account created!  Please finish setting up your details in the 'Account' tab above.", "success")
-        return redirect(url_for("login"))
+        return redirect(url_for("users.login"))
     return render_template("register.html", title="Register", form=form, posts=posts)
 
 
 ########  Account  ########
-@app.route("/account", methods=["GET", "POST"])
+@users.route("/account", methods=["GET", "POST"])
 @login_required
 def account():
     form = UpdateAccountForm()
@@ -90,7 +61,7 @@ def account():
         current_user.surname = form.surname.data
         db.session.commit()
         flash("Your account has been updated!", "success")
-        return redirect(url_for("account"))
+        return redirect(url_for("users.account"))
     elif request.method == "GET":
         form.username.data = current_user.username
         form.forename.data = current_user.forename
@@ -101,19 +72,57 @@ def account():
     return render_template("account.html", title="Account", image_file=image_file, form=form, posts=posts)
 
 
+########  Reset Password: Request  ########
+@users.route("/reset_password", methods=["GET", "POST"])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for("main.home"))
+    posts = Post.query.all()
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash("An email has been sent with instructions on your password reset", "info")
+        return redirect(url_for("users.login"))
+    return render_template("reset_request.html", title="Reset Password", form=form, posts=posts)
+
+
+########  Reset Password: GET Token  ########
+@users.route("/reset_password/<token>", methods=["GET", "POST"])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for("main.home"))
+    posts = Post.query.all()
+    user = User.verify_reset_token(token)
+    if not user:
+        flash("Error: Invalid or expired token", "warning")
+        return redirect(url_for("users.reset_request"))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashedPassword = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
+        user.password = hashedPassword
+        db.session.commit()
+        login_user(user)
+        flash(f"Password Updated!", "success")
+        return redirect(url_for("users.login"))
+    return render_template("reset_token.html", title="Reset Password", form=form, posts=posts)
+
+
 ########  Logout  ########
-@app.route("/logout")
+@users.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for("home"))
+    return redirect(url_for("main.home"))
+
+
 
 
 ########  Admin  ########
-@app.route("/admin/", methods=["GET"])
+@users.route("/admin/", methods=["GET"])
 @login_required
 def admin():
     if current_user.administrator != 1:
-        return redirect(url_for("home"))
+        return redirect(url_for("main.home"))
     posts = Post.query.all()
     noSidebar = False
     users = User.query.filter(User.username != current_user.username)
@@ -121,7 +130,7 @@ def admin():
 
 
 ########  Admin - Edit  ########
-@app.route("/admin/e<int:userToEdit>", methods=["GET", "POST"])
+@users.route("/admin/e<int:userToEdit>", methods=["GET", "POST"])
 @login_required
 def editUser(userToEdit):
     if current_user.administrator != 1:
@@ -146,7 +155,7 @@ def editUser(userToEdit):
             userE.administrator = 1
         db.session.commit()
         flash("Account Successfully Updated!", "success")
-        return redirect(url_for("admin"))
+        return redirect(url_for("users.admin"))
     elif request.method == "GET":
         form.username.data = userE.username
         form.forename.data = userE.forename
@@ -163,7 +172,7 @@ def editUser(userToEdit):
 
 
 ########  Admin - Delete  ########
-@app.route("/admin/d<int:userToDelete>")
+@users.route("/admin/d<int:userToDelete>")
 @login_required
 def deleteUser(userToDelete):
     if current_user.administrator != 1:
@@ -177,7 +186,7 @@ def deleteUser(userToDelete):
 
 
 ########  Admin - Delete: BACKEND  ########
-@app.route("/admin/<int:userToDelete>/delete", methods=["POST"])
+@users.route("/admin/<int:userToDelete>/delete", methods=["POST"])
 @login_required
 def DELETEUSER(userToDelete):
     if current_user.administrator != 1:
@@ -186,63 +195,4 @@ def DELETEUSER(userToDelete):
     db.session.delete(userD)
     db.session.commit()
     flash(f"User {userD.username} has been removed!", "success")
-    return redirect(url_for("admin"))
-
-
-########  Post  ########
-@app.route("/post/<int:post_id>")
-def post(post_id):
-    posts = Post.query.all()
-    post = Post.query.get_or_404(post_id)
-    return render_template("post.html", title=post.title, post=post, legend="New Post", posts=posts)
-
-
-########  Post - New  ########
-@app.route("/post/new", methods=["GET", "POST"])
-@login_required
-def new_post():
-    form = PostForm()
-    posts = Post.query.all()
-    if form.validate_on_submit():
-        post = Post(title=form.title.data,
-                    content=form.content.data, author=current_user)
-        db.session.add(post)
-        db.session.commit()
-        flash("Your post has been created!", "success")
-        return redirect(url_for("home"))
-    return render_template("create_post.html", title="New Post", form=form, posts=posts)
-
-
-########  Post - Update  ########
-@app.route("/post/<int:post_id>/update", methods=["GET", "POST"])
-@login_required
-def update_post(post_id):
-    posts = Post.query.all()
-    post = Post.query.get_or_404(post_id)
-    if post.author == current_user or current_user.administrator == 1:
-        form = PostForm()
-        if form.validate_on_submit():
-            post.title = form.title.data
-            post.content = form.content.data
-            db.session.commit()
-            flash("Your post has been updated!", "success")
-            return redirect(url_for("home"))
-        elif request.method == "GET":
-            form.title.data = post.title
-            form.content.data = post.content
-        return render_template("create_post.html", title="Update Post", form=form, posts=posts, legend="Update Post")
-    else:
-        abort(403)
-
-
-########  Post - Delete: BACKEND
-@app.route("/post/<int:post_id>/delete", methods=["POST"])
-@login_required
-def delete_post(post_id):
-    post = Post.query.get_or_404(post_id)
-    if post.author != current_user:
-        abort(403)
-    db.session.delete(post)
-    db.session.commit()
-    flash("Your post has been deleted!", "success")
-    return redirect(url_for("home"))
+    return redirect(url_for("users.admin"))
