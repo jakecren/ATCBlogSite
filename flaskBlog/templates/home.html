@@ -1,9 +1,11 @@
 {% extends 'layout.html' %}
 {% block content %}
-{% for post in posts[::-1] %}
-<article class="media content-section">
-  <img class="rounded-circle article-img"
-    src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+{% for post in homePosts.items %}
+<article class="media content-section" id="{{ post.id }}">
+  <a href="#">
+    <img class="rounded-circle article-img"
+      src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+  </a>
   <div class="media-body">
     <div class="article-metadata">
       <a class="mr-2" href="#">{{ post.author.username }}</a>
@@ -14,4 +16,21 @@
   </div>
 </article>
 {% endfor %}
+<ul class="pagination justify-content-center" style="margin:20px 0">
+  {% for page_num in homePosts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+  {% if page_num %}
+  {% if homePosts.page == page_num %}
+  <li class="page-item active">
+    <a class="page-link" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a></li>
+  {% else %}
+  <li class="page-item">
+    <a class="page-link" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a></li>
+  {% endif %}
+  {% else %}
+  <li class="page-item">
+    <div class="page-link">...</div>
+  </li>
+  {% endif %}
+  {% endfor %}
+</ul>
 {% endblock content %}

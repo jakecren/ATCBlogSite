@@ -23,8 +23,10 @@ def save_picture(form_picture):
 ########  Home  ########
 @app.route("/")
 def home():
+    page = request.args.get("page", 1, type=int)
+    homePosts = Post.query.paginate(page=page, per_page=1)
     posts = Post.query.all()
-    return render_template("home.html", title="ATC Blog", posts=posts)
+    return render_template("home.html", title="ATC Blog", homePosts=homePosts, posts=posts)
 
 
 ########  About  ########
