@@ -5,4 +5,4 @@ class Config():
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USERNAME = "apikey"
-    MAIL_PASSWORD = "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"
+    MAIL_PASSWORD = "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"

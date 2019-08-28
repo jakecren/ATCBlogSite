@@ -24,7 +24,7 @@
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "flaskBlog.py",
+                "FLASK_APP": "flaskBlog",
                 "FLASK_ENV": "development",
                 "FLASK_DEBUG": "0"
             },
@@ -41,7 +41,7 @@
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "flaskBlog.py",
+                "FLASK_APP": "flaskBlog",
                 "FLASK_ENV": "development",
                 "FLASK_DEBUG": "1"
             },
