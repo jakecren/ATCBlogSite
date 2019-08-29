@@ -1,2 +1,5 @@
 __pycache__
-.vscode/
+.vscode/launch.json
+.vscode/settings.json
+flaskBlog/site.db
+flaskBlog/userLogFile.txt
