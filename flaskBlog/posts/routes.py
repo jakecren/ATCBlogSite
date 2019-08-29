@@ -3,6 +3,8 @@ from flask_login import current_user, login_required
 from flaskBlog import db
 from flaskBlog.models import Post, User
 from flaskBlog.posts.forms import PostForm
+from datetime import datetime
+import pytz
 
 
 posts = Blueprint("posts", __name__)
@@ -22,7 +24,7 @@ def user_posts(username):
     user = User.query.filter_by(username=username).first_or_404()
     homePosts = Post.query.filter_by(author=user)\
         .order_by(Post.date_posted.desc())\
-        .paginate(page=page, per_page=3)
+        .paginate(page=page, per_page=8)
 
     posts = Post.query.all()
     return render_template("user_posts.html", title=user.username, homePosts=homePosts, posts=posts, user=user)
@@ -36,7 +38,7 @@ def new_post():
     posts = Post.query.all()
     if form.validate_on_submit():
         post = Post(title=form.title.data,
-                    content=form.content.data, author=current_user)
+                    content=form.content.data, author=current_user, date_posted=datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(pytz.timezone("Australia/Brisbane")))
         db.session.add(post)
         db.session.commit()
         flash("Your post has been created!", "success")
