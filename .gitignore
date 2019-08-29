@@ -3,3 +3,4 @@ __pycache__
 .vscode/settings.json
 flaskBlog/site.db
 flaskBlog/userLogFile.txt
+flaskBlog/static/profile_pics
