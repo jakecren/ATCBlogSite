@@ -8,10 +8,10 @@ from flaskBlog.models import User
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField("Email", validators=[DataRequired(), Email()])
-    password = PasswordField("Password", validators=[DataRequired()])
-    confirmPassword = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo("password")])
+    username = StringField("Username:", validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField("Email:", validators=[DataRequired(), Email()])
+    password = PasswordField("Password:", validators=[DataRequired()])
+    confirmPassword = PasswordField("Confirm Password:", validators=[DataRequired(), EqualTo("password")])
     submit = SubmitField("Sign Up")
 
     def validate_username(self, username):
@@ -26,19 +26,19 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    email = StringField("Email", validators=[DataRequired(), Email()])
-    password = PasswordField("Password", validators=[DataRequired()])
-    remember = BooleanField("Remember Me")
+    email = StringField("Email:", validators=[DataRequired(), Email()])
+    password = PasswordField("Password:", validators=[DataRequired()])
+    remember = BooleanField("Remember Me:")
     submit = SubmitField("Log In")
 
 
 class UpdateAccountForm(FlaskForm):
-    username = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
-    forename = StringField("First Name", validators=[Length(max=50)])
-    surname = StringField("Last Name", validators=[Length(max=50)])
-    email = StringField("Email", validators=[DataRequired(), Email()])
-    picture = FileField("Update Profile Picture", validators=[FileAllowed(["jpg", "png"])])
-    admin = BooleanField("Administrator")
+    username = StringField("Username:", validators=[DataRequired(), Length(min=2, max=20)])
+    forename = StringField("First Name:", validators=[Length(max=50)])
+    surname = StringField("Last Name:", validators=[Length(max=50)])
+    email = StringField("Email:", validators=[DataRequired(), Email()])
+    picture = FileField("Update Profile Picture:", validators=[FileAllowed(["jpg", "png"])])
+    admin = BooleanField("Administrator:")
     submit = SubmitField("Update Details")
 
     def validate_username(self, username):
@@ -55,7 +55,7 @@ class UpdateAccountForm(FlaskForm):
 
 
 class RequestResetForm(FlaskForm):
-    email = StringField("Email", validators=[DataRequired(), Email()])
+    email = StringField("Email:", validators=[DataRequired(), Email()])
     submit = SubmitField("Request Password Reset")
 
     def validate_email(self, email):
@@ -65,35 +65,18 @@ class RequestResetForm(FlaskForm):
 
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField("Password", validators=[DataRequired()])
-    confirmPassword = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo("password")])
+    password = PasswordField("Password:", validators=[DataRequired()])
+    confirmPassword = PasswordField("Confirm Password:", validators=[DataRequired(), EqualTo("password")])
     submit = SubmitField("Reset Password")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class UpdateAccountFormAdmin(FlaskForm):
-    username = StringField("Username", validators=[DataRequired(), Length(min=2, max=20)])
-    forename = StringField("First Name", validators=[Length(max=50)])
-    surname = StringField("Last Name", validators=[Length(max=50)])
-    email = StringField("Email", validators=[DataRequired(), Email()])
-    picture = FileField("Update Profile Picture", validators=[FileAllowed(["jpg", "png"])])
-    admin = BooleanField("Administrator")
+    username = StringField("Username:", validators=[DataRequired(), Length(min=2, max=20)])
+    forename = StringField("First Name:", validators=[Length(max=50)])
+    surname = StringField("Last Name:", validators=[Length(max=50)])
+    email = StringField("Email:", validators=[DataRequired(), Email()])
+    picture = FileField("Update Profile Picture:", validators=[FileAllowed(["jpg", "png"])])
+    admin = BooleanField("Administrator:")
     submit = SubmitField("Update Details")
 
     def validate_username(self, username):

@@ -4,6 +4,7 @@ from PIL import Image
 from flask import url_for, current_app
 from sendgrid.helpers.mail import Mail
 from flaskBlog import SGmail
+from datetime import datetime
 
 
 def save_picture(form_picture):
@@ -30,3 +31,14 @@ def send_reset_email(user):
 If you did not make this request, please simply ignore this email and no changes will be made.
     ''')
     SGmail.send(msg)
+
+
+def usersLoggedIn(uname, uid, admin):
+    currentDT = datetime.utcnow().strftime("%Y-%m-%d | %H:%M:%S (UTC)")
+    if admin:
+        adminTF = "(ADMIN)"
+    else:
+        adminTF = ""
+    LogFile = open("flaskBlog/userLogFile.txt", "a")
+    LogFile.write(f"~ {currentDT} = login: {uname}({uid}) {adminTF}\n")
+    LogFile.close()

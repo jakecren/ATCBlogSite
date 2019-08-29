@@ -3,7 +3,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from flaskBlog import db, bcrypt
 from flaskBlog.models import User, Post
 from flaskBlog.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, UpdateAccountFormAdmin
-from flaskBlog.users.utils import save_picture, send_reset_email
+from flaskBlog.users.utils import save_picture, send_reset_email, usersLoggedIn
 
 
 users = Blueprint("users", __name__)
@@ -17,9 +17,10 @@ def login():
     form = LoginForm()
     posts = Post.query.all()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=str(form.email.data).lower()).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
+            usersLoggedIn(user.username, user.id, user.administrator)
             next_page = request.args.get("next")
             return redirect(next_page) if next_page else redirect(url_for("main.home"))
         else:
@@ -36,10 +37,11 @@ def register():
     posts = Post.query.all()
     if form.validate_on_submit():
         hashedPassword = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
-        user = User(username=form.username.data, email=form.email.data, password=hashedPassword)
+        user = User(username=str(form.username.data).lower(), email=str(form.email.data).lower(), password=hashedPassword)
         db.session.add(user)
         db.session.commit()
         login_user(user)
+        usersLoggedIn(user.username, user.id, user.administrator)
         flash(f"Account created!  Please finish setting up your details in the 'Account' tab above.", "success")
         return redirect(url_for("users.login"))
     return render_template("register.html", title="Register", form=form, posts=posts)
@@ -55,8 +57,8 @@ def account():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
-        current_user.username = form.username.data
-        current_user.email = form.email.data
+        current_user.username = str(form.username.data).lower()
+        current_user.email = str(form.email.data).lower()
         current_user.forename = form.forename.data
         current_user.surname = form.surname.data
         db.session.commit()
@@ -103,6 +105,7 @@ def reset_token(token):
         user.password = hashedPassword
         db.session.commit()
         login_user(user)
+        usersLoggedIn(user.username, user.id, user.administrator)
         flash(f"Password Updated!", "success")
         return redirect(url_for("users.login"))
     return render_template("reset_token.html", title="Reset Password", form=form, posts=posts)
@@ -113,7 +116,6 @@ def reset_token(token):
 def logout():
     logout_user()
     return redirect(url_for("main.home"))
-
 
 
 
@@ -147,8 +149,8 @@ def editUser(userToEdit):
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             userE.image_file = picture_file
-        userE.username = form.username.data
-        userE.email = form.email.data
+        userE.username = str(form.username.data).lower()
+        userE.email = str(form.email.data).lower()
         userE.forename = form.forename.data
         userE.surname = form.surname.data
         if form.admin.data == True:
@@ -196,3 +198,14 @@ def DELETEUSER(userToDelete):
     db.session.commit()
     flash(f"User {userD.username} has been removed!", "success")
     return redirect(url_for("users.admin"))
+
+
+######## Admin - View Login Log.txt File ########
+@users.route("/admin/ulf")
+@login_required
+def userLogFile():
+    if current_user.administrator != 1:
+        abort(403)
+    with open("flaskBlog/userLogFile.txt", "r") as f:
+        content = f.read()
+    return render_template("userLog.html", title="Administration", content=content)
