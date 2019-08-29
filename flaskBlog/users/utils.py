@@ -5,6 +5,7 @@ from flask import url_for, current_app
 from sendgrid.helpers.mail import Mail
 from flaskBlog import SGmail
 from datetime import datetime
+import pytz
 
 
 def save_picture(form_picture):
@@ -34,7 +35,7 @@ If you did not make this request, please simply ignore this email and no changes
 
 
 def usersLoggedIn(uname, uid, admin):
-    currentDT = datetime.utcnow().strftime("%Y-%m-%d | %H:%M:%S (UTC)")
+    currentDT = datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(pytz.timezone("Australia/Brisbane")).strftime("%Y-%m-%d | %H:%M:%S (%z)")
     if admin:
         adminTF = "(ADMIN)"
     else:
