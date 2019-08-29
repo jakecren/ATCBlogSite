@@ -35,7 +35,7 @@ If you did not make this request, please simply ignore this email and no changes
 
 
 def usersLoggedIn(uname, uid, admin):
-    currentDT = datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(pytz.timezone("Australia/Brisbane")).strftime("%Y-%m-%d | %H:%M:%S (+10:00)")
+    currentDT = datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(pytz.timezone("Australia/Brisbane")).strftime("%Y-%m-%d | %H:%M:%S (%z)")
     if admin:
         adminTF = "(ADMIN)"
     else:
