@@ -1,6 +1,6 @@
 __pycache__
-.vscode/launch.json
-.vscode/settings.json
+.pytest_cache
+.vscode
 flaskBlog/site.db
 flaskBlog/userLogFile.txt
 flaskBlog/static/profile_pics
