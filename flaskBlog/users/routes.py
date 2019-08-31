@@ -155,6 +155,8 @@ def editUser(userToEdit):
         userE.surname = form.surname.data
         if form.admin.data == True:
             userE.administrator = 1
+        else:
+            userE.administrator = 0
         db.session.commit()
         flash("Account Successfully Updated!", "success")
         return redirect(url_for("users.admin"))
