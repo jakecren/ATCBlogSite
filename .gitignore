@@ -2,5 +2,6 @@ __pycache__
 .pytest_cache
 .vscode
 flaskBlog/userLogFile.txt
+flaskBlog/site.db
 flaskBlog/static/profile_pics
 .DS_Store
