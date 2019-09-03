@@ -22,7 +22,7 @@ class RegistrationForm(FlaskForm):
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user:
-            raise ValidationError("Email is unavailable, please choose a different username.")
+            raise ValidationError("Email is unavailable, please choose a different email.")
 
 
 class LoginForm(FlaskForm):
