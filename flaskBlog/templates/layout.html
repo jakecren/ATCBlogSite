@@ -10,6 +10,8 @@
 <head>
     <meta charset="UTF-8">
 
+    <script src="https://kit.fontawesome.com/4c0743ea52.js"></script>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -56,7 +58,7 @@
                         <a class="nav-item nav-link" href="{{ url_for('posts.new_post') }}">New Post</a>
                         <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
                         {% if current_user.administrator == 1 %}
-                        <a class="nav-item nav-link" href="{{  url_for('users.admin')  }}">Administration</a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.admin') }}">Administration</a>
                         {% endif %}
                         <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
                         {% else %}
@@ -103,6 +105,73 @@
             {% endif %}
         </div>
     </main>
+
+    <footer class="site-footer">
+        {% if title == "ATC Blog" %}
+        <div class="jumbotron jumbotron-fluid" id="footerLinks"
+            style="margin-bottom:0; padding-top:10px; padding-bottom:10px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4>Links</h4>
+                        <dl style="list-style-type:none;">
+                            <dd><a href="{{ url_for('main.home') }}">Home</a></dd>
+                            <dd><a href="{{ url_for('main.about') }}">About</a></dd>
+                            {% if current_user.is_authenticated %}
+                            <dd><a href="{{ url_for('posts.new_post') }}">New Post</a></dd>
+                            <dd><a href="{{ url_for('users.account') }}">Account</a></dd>
+                            {% if current_user.administrator == 1 %}
+                            <dd><a href="{{ url_for('users.admin') }}">Administration</a></dd>
+                            {% endif %}
+                            <dd><a href="{{ url_for('users.logout') }}">Logout</a></dd>
+                            {% else %}
+                            <dd><a href="{{ url_for('users.register') }}">Register</a></dd>
+                            <dd><a href="{{ url_for('users.login') }}">Login</a></dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Contact Us!</h4>
+                        <dl style="list-style-type: none;">
+                            <dd>Ambrose Treacy College<br>Twigg Street, Indooroopilly<br>Queensland, 4068, Australia
+                            </dd>
+                            <dd>Junior and Middle Schools: <a href="tel:07 3878 0500">07 3878 0500</a>,<br><a
+                                    href="tel:07 3878 0501">07 3878 0501</a>, <a
+                                    href="mailto:admin@atc.qld.edu.au">admin@atc.qld.edu.au</a></dd>
+                            <dd>Senior School: <a href="tel:07 3878 0545">07 3878 0545</a>, <a
+                                    href="mailto:seniorschool@atc.qld.edu.au">seniorschool@atc.qld.edu.au</a></dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Keep Up To Date!</h4>
+                        <dl style="list-style-type: none;">
+                            <dd><a target="_blank" href="https://www.instagram.com/ambrose_treacy_college/">Instagram!
+                                    <i class="fab fa-instagram"></i></a></dd>
+                            <dd><a target="_blank" href="https://www.facebook.com/ambrosetreacylife/">Facebook! <i
+                                        class="fab fa-facebook-square"></i></a></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel" id="CRLinks">
+            <div class="container-fluid" style="width:85%;">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item active">
+                        <a href="#" class="nav-link">&copy; Copyright 2019 Jake Rennie</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="nav-item active">
+                        <a class="nav-link" target="_blank" href="https://github.com/jakecren?tab=repositories">Website
+                            Design by Jake Rennie</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </footer>
 
 </body>
 

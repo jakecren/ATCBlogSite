@@ -10,6 +10,41 @@ html {
   background-color: #FFFFFF;
 }
 
+#footerLinks h4 {
+  color: #004282;
+}
+
+#footerLinks a:link {
+  color: black; 
+  background-color: transparent; 
+  text-decoration: none;
+}
+
+#footerLinks a:visited {
+  color: black;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+#footerLinks a:hover {
+  color: #00944d;
+  background-color: transparent;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#footerLinks a:active {
+  color: black;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+#CRLinks a:hover {
+  color: white;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
 #EREA{
   padding-top: 45px;
 }
