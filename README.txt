@@ -1,37 +1,27 @@
-This site is/will be the result of folowing a tutorial on youtube in hope of getting back into web app coding.
+Blogging Website for Ambrose Treacy College's Senior English Department.
 
 
-Package           Version
------------------ -------
-astroid           2.2.5  
-autopep8          1.4.4  
-bcrypt            3.1.7  
-cffi              1.12.3 
-Click             7.0    
-entrypoints       0.3    
-flake8            3.7.8  
-Flask             1.1.1  
-Flask-Bcrypt      0.7.1  
-Flask-Login       0.4.1  
-Flask-SQLAlchemy  2.4.0  
-Flask-WTF         0.14.2 
-isort             4.3.21 
-itsdangerous      1.1.0  
-Jinja2            2.10.1 
-lazy-object-proxy 1.4.1  
-MarkupSafe        1.1.1  
-mccabe            0.6.1  
-Pillow            6.1.0  
-pip               19.2.1 
-pycodestyle       2.5.0  
-pycparser         2.19   
-pyflakes          2.1.1  
-pylint            2.3.1  
-setuptools        41.0.1 
-six               1.12.0 
-SQLAlchemy        1.3.5  
-typed-ast         1.4.0  
-Werkzeug          0.15.5 
-wheel             0.33.4 
-wrapt             1.11.2 
-WTForms           2.2.1
+Current Functionallity: (v1.3.1)
+Users
+- Register
+- Login
+- Reset Password
+- Edit Account
+
+Posts
+- New Post
+- Edit Post
+- Recent Posts
+- Filter Posts via User
+- Delete Posts
+
+Admin
+- View Users
+- Edit Users
+- Delete Users
+- Edit Posts
+- Delete Posts
+- View Site Logs
+
+
+Current Open Source Licensing: GNU General Public License v3.0
