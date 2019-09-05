@@ -14,10 +14,15 @@ login_manager.login_message_category = "info"
 
 SGmail = SendGridAPIClient(Config.MAIL_PASSWORD)
 
+def splitChars(string):
+    return [st for st in string]
+
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    app.jinja_env.filters['splitChars'] = splitChars
 
     db.init_app(app)
     bcrypt.init_app(app)

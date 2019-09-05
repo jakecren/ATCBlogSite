@@ -10,6 +10,17 @@ html {
   background-color: #FFFFFF;
 }
 
+
+#splashText{
+  height: 95%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 20px;
+  margin-top: 10%;
+  margin-bottom: 10%;
+}
+
 #footerLinks h4 {
   color: #004282;
 }
@@ -29,8 +40,7 @@ html {
 #footerLinks a:hover {
   color: #00944d;
   background-color: transparent;
-  font-weight: bold;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 #footerLinks a:active {

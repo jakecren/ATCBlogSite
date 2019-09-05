@@ -1,9 +1,14 @@
-{% extends 'layout.html' %}
+{% if userLoggedIn %}
+    {% set layout = "layout.html" %}
+{% else %}
+    {% set layout = "s_layout.html" %}
+{% endif %}
+{% extends layout %}
 {% block content %}
 <div class="container">
     <div id="title">
         <h1>About</h1>
     </div>
-    <a href="www.atc.qld.edu.au">Ambrose Treacy College Website</a>
+    <a href="www.atc.qld.edu.au">Ambrose Treacy College Website</a><br><br>
 </div>
 {% endblock content %}

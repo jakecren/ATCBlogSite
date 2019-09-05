@@ -1,0 +1,14 @@
+{% extends "s_layout.html" %}
+{% block content %}
+
+<div id="splashText">
+    <div>
+        <h1 class="display-1 text-center">Ambrose Treacy College: Senior English Blog</h1>
+        <hr style="width:75%;">
+        <div class="row">
+            <a class="btn btn-outline-info btn-lg col-md-5" style="margin-left:auto; margin-right:auto;"
+                href="{{ url_for('users.login') }}">Login</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
