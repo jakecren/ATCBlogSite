@@ -19,6 +19,7 @@
                     <th>Surname</th>
                     <th>Username</th>
                     <th>Email</th>
+                    <th>Most Recent Post</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -36,10 +37,37 @@
                         {{ user.surname }}
                     </td>
                     <td>
-                        {{ user.username }}
+                        <a onMouseOver="this.style.color='#00944d'" onMouseOut="this.style.color='#007bff'" href="{{ url_for('posts.user_posts', username=user.username) }}">{{ user.username }}</a>
                     </td>
                     <td>
-                        <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                        <a onMouseOver="this.style.color='#00944d'" onMouseOut="this.style.color='#007bff'" href="mailto:{{ user.email }}">{{ user.email }}</a>
+                    </td>
+                    <td>
+                        {% set postCount = [1] %}
+                        {% set totalChar = 22 %}
+                        {% set finalString = [""] %}
+
+                        {% for post in posts %}
+                            {% if loop.index == postCount[0] %}
+                                {% if post.author == user %}
+
+                                    {% for letter in post.title|splitChars %}
+                                        {% if loop.index <= totalChar %}
+                                            {% set finalString = finalString.append(finalString.pop() + letter) %}
+                                        {% endif %}
+                                        {% if loop.index == (totalChar+1) %}
+                                            {% set finalString = finalString.append(finalString.pop().rstrip() + "...") %} 
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <a onMouseOver="this.style.color='#00944d'" onMouseOut="this.style.color='#007bff'" href="{{ url_for('posts.post', post_id=post.id) }}">{{ finalString[0] }}</a>
+                                    
+                                    {% set postCount = postCount.append(postCount.pop() - 1) %}
+                                {% else %}
+                                    {% set postCount = postCount.append(postCount.pop() + 1) %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
                     </td>
                     <td style="padding-right: 0px;">
                         <a class="btn btn-outline-info btn-sm"
