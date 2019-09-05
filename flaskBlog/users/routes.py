@@ -1,9 +1,12 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint
+from flask import render_template, url_for, flash, redirect, request, Blueprint, current_app
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskBlog import db, bcrypt
 from flaskBlog.models import User, Post
-from flaskBlog.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, UpdateAccountFormAdmin
+from flaskBlog.users.forms import RegistrationForm, RegistrationMultiForm, RegistrationMultiBACKENDForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, UpdateAccountFormAdmin
 from flaskBlog.users.utils import save_picture, send_reset_email, usersLoggedIn
+import csv
+from werkzeug.utils import secure_filename
+import os
 
 
 users = Blueprint("users", __name__)
@@ -30,9 +33,10 @@ def login():
 
 ########  Register  ########
 @users.route("/register", methods=["GET", "POST"])
+@login_required
 def register():
-    if current_user.is_authenticated:
-        return redirect(url_for("main.home"))
+    if current_user.administrator != 1:
+        abort(403)
     form = RegistrationForm()
     posts = Post.query.all()
     if form.validate_on_submit():
@@ -40,11 +44,54 @@ def register():
         user = User(username=str(form.username.data).lower(), email=str(form.email.data).lower(), password=hashedPassword)
         db.session.add(user)
         db.session.commit()
-        login_user(user)
         usersLoggedIn(user.username, user.id, user.administrator)
-        flash(f"Account created!  Please finish setting up your details in the 'Account' tab above.", "success")
-        return redirect(url_for("users.login"))
-    return render_template("register.html", title="Register", form=form, posts=posts)
+        flash("Account created!  Please finish setting up user details when ready.", "success")
+        return redirect(url_for("users.admin"))
+    return render_template("register.html", title="Register User", form=form, posts=posts)
+
+
+########  Register Multiple Users  ########
+@users.route("/registermulti", methods=["GET", "POST"])
+@login_required
+def registerMulti():
+    if current_user.administrator != 1:
+        abort(403)
+    form = RegistrationMultiForm()
+    backval = RegistrationMultiBACKENDForm()
+    posts = Post.query.all()
+    if form.validate_on_submit():
+        usersFileFN = secure_filename(form.csvFile.data.filename)
+        usersFile = form.csvFile.data
+        usersFile.save(os.path.join(current_app.root_path, "temp/", usersFileFN))
+
+        with open(f"flaskBlog/temp/{usersFileFN}") as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            line_count = 0
+            for row in csv_reader:
+
+                backval.username.data = row[0]
+                backval.forename.data = row[1]
+                backval.surname.data = row[2]
+                backval.email.data = row[3]
+                backval.password.data = row[4]
+
+                if backval.validate():
+                    hashedPwd = bcrypt.generate_password_hash(row[4]).decode("utf-8")
+                    newUser = User(username=str(row[0]).lower(), forename=row[1], surname=row[2], email=str(row[3]).lower(), password=hashedPwd)
+                    db.session.add(newUser)
+                    line_count += 1
+                else:
+                    db.session.flush()
+                    flash(f"Multiple User Creation Failed.  Record with username: '{row[0]}' does not follow the proper registration criteria.", "danger")
+                    os.remove(f"flaskBlog/temp/{usersFileFN}")
+                    return redirect(url_for("users.admin"))
+
+        os.remove(f"flaskBlog/temp/{usersFileFN}")
+        db.session.commit()
+        flash(f"Succesfully Added {line_count} Users!", "success")
+
+        return redirect(url_for("users.admin"))
+    return render_template("registerMulti.html", title="Register Users", form=form, posts=posts)
 
 
 ########  Account  ########
@@ -115,8 +162,7 @@ def reset_token(token):
 @users.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for("main.home"))
-
+    return redirect(url_for("main.splash"))
 
 
 ########  Admin  ########
