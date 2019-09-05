@@ -5,4 +5,4 @@ pytz
 Pillow
 sendgrid
 flask-sqlalchemy
-flask-bcrypt
+flask-bcryptpython-dotenv
