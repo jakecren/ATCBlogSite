@@ -84,10 +84,11 @@
         </table>
     </div>
     <div id="title">
-        <h2>Site Logs</h2>
+        <h2>Administrator Functions</h2>
     </div>
-    <a class="btn btn-outline-info" href="{{ url_for('users.userLogFile') }}"
-        style="margin-left: 5px; margin-bottom: 16px;">User Logins</a>
+    <a class="btn btn-outline-info" href="{{ url_for('users.userLogFile') }}" style="margin-left: 5px; margin-bottom: 16px;">View Log - User Sign In</a>
+    <a class="btn btn-outline-info" href="{{ url_for('users.register') }}" style="margin-left: 5px; margin-bottom: 16px;">Register User</a>
+    <a class="btn btn-outline-info" href="{{ url_for('users.registerMulti') }}" style="margin-left: 5px; margin-bottom: 16px;">Register Multiple Users (.CSV)</a>
 </div>
 
 

@@ -11,6 +11,7 @@ posts = Blueprint("posts", __name__)
 
 ########  Post  ########
 @posts.route("/post/<int:post_id>")
+@login_required
 def post(post_id):
     posts = Post.query.all()
     post = Post.query.get_or_404(post_id)
@@ -19,6 +20,7 @@ def post(post_id):
 
 ########  Post: user  ########
 @posts.route("/user/<string:username>")
+@login_required
 def user_posts(username):
     page = request.args.get("page", 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()

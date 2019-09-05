@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" id="splash">
+
+<head>
+    <meta charset="UTF-8">
+
+    <script src="https://kit.fontawesome.com/4c0743ea52.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>ATC Senior English Blog</title>
+    {% endif %}
+</head>
+
+<body>
+    <div class="container">
+        <div class="banner">
+            <a href="{{ url_for('main.splash') }}"><img class="col-md-5 img-fluid float-left" src="\static\ATCLogo.png"
+                    alt="Ambrose Treacy College"></a>
+            <a href="http://www.erea.edu.au" target="_blank"><img class="col-md-5 img-fluid float-right" id="EREA"
+                    src="\static\EREALogo.png" alt="A Catholic School In The Edmund Rice Tradition"></a>
+        </div>
+    </div>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel sticky-top">
+            <div class="container">
+                <a class="navbar-brand mr-4" href="{{ url_for('main.splash') }}">ATC Senior English Blog</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+                    aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <div class="navbar-nav mr-auto">
+                        <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
+                    </div>
+                    <!-- Navbar Right Side -->
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <div class="row">
+        <div class="container col-md-5 center" style="position: absolute; top: 15%; left: 30%;">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages  %}
+            <div class="alert alert-{{ category }}"
+                style="padding-top: 10px; margin-top: 10px; margin-left: 5px; margin-right: 0px;">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+
+
+    <footer class="site-footer" id="splashFooter">
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel" id="CRLinks">
+            <div class="container-fluid" style="width:85%;">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item active">
+                        <a href="#" class="nav-link">&copy; Copyright 2019 Jake Rennie</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="nav-item active">
+                        <a class="nav-link" target="_blank" href="https://github.com/jakecren?tab=repositories">Website
+                            Design by Jake Rennie</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </footer>
+
+</body>
+
+</html>
