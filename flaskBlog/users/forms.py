@@ -27,7 +27,7 @@ class RegistrationForm(FlaskForm):
 
 class RegistrationMultiForm(FlaskForm):
     csvFile = FileField("Upload User CSV File:", validators=[FileAllowed(["csv"]), FileRequired()])
-    submit = SubmitField("Sign Up")
+    submit = SubmitField("Register Users")
 
 
 class RegistrationMultiBACKENDForm(FlaskForm):

@@ -47,7 +47,7 @@
                         {% set totalChar = 22 %}
                         {% set finalString = [""] %}
 
-                        {% for post in posts %}
+                        {% for post in posts[::-1] %}
                             {% if loop.index == postCount[0] %}
                                 {% if post.author == user %}
 
