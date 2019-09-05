@@ -196,9 +196,12 @@ def DELETEUSER(userToDelete):
     if current_user.administrator != 1:
         abort(403)
     userD = User.query.get_or_404(userToDelete)
+    userDPosts = Post.query.filter_by(author=userD)
+    for post in userDPosts:
+        db.session.delete(post)
     db.session.delete(userD)
     db.session.commit()
-    flash(f"User {userD.username} has been removed!", "success")
+    flash(f"User {userD.username} and any posts made by them have been removed!", "success")
     return redirect(url_for("users.admin"))
 
 
